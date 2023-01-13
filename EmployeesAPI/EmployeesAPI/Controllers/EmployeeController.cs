@@ -1,7 +1,6 @@
 ﻿using EmployeesAPI.Domain;
 using EmployeesAPI.Extensions;
 using EmployeesAPI.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeesAPI.Controllers
