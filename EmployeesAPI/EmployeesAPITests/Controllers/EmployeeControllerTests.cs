@@ -127,6 +127,50 @@ namespace EmployeesAPITests.Controllers
         }
 
         [Fact]
+        public async void Post_Should_ReturnBadRequest_When_InvalidStartDate()
+        {
+            var birthDate = DateTime.Now;
+
+            var employeeToSave = new SaveEmployeeModel
+            {
+                BirthDate = birthDate,
+                Cpf = "11111111111",
+                Email = "email1@email.com",
+                Gender = "Male",
+                StartDate = "22/208962",
+                Team = null
+            };
+
+            ValidateModelForTests(employeeToSave, employeeController);
+            var result = await employeeController.PostAsync(employeeToSave) as ObjectResult;
+
+            Assert.False(employeeController.ModelState.IsValid);
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+        }
+
+        [Fact]
+        public async void Post_Should_ReturnBadRequest_When_InvalidEmail()
+        {
+            var birthDate = DateTime.Now;
+
+            var employeeToSave = new SaveEmployeeModel
+            {
+                BirthDate = birthDate,
+                Cpf = "11111111111",
+                Email = "emailInvalid",
+                Gender = "Male",
+                StartDate = "08/2012",
+                Team = null
+            };
+
+            ValidateModelForTests(employeeToSave, employeeController);
+            var result = await employeeController.PostAsync(employeeToSave) as ObjectResult;
+
+            Assert.False(employeeController.ModelState.IsValid);
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+        }
+
+        [Fact]
         public async void Put_Should_UpdateAndReturnEmployee_When_ValidEmployeeModel()
         {
             var id = 1;
@@ -171,6 +215,52 @@ namespace EmployeesAPITests.Controllers
 
             employeeService.Verify(s => s.UpdateAsync(id, It.IsAny<SaveEmployeeModel>()));
             employeeService.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void Put_Should_ReturnBadRequest_When_InvalidStartDate()
+        {
+            var birthDate = DateTime.Now;
+            var id = 1;
+
+            var employeeToSave = new SaveEmployeeModel
+            {
+                BirthDate = birthDate,
+                Cpf = "11111111111",
+                Email = "email1@email.com",
+                Gender = "Male",
+                StartDate = "22/208962",
+                Team = null
+            };
+
+            ValidateModelForTests(employeeToSave, employeeController);
+            var result = await employeeController.PutAsync(id, employeeToSave) as ObjectResult;
+
+            Assert.False(employeeController.ModelState.IsValid);
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+        }
+
+        [Fact]
+        public async void Put_Should_ReturnBadRequest_When_InvalidEmail()
+        {
+            var birthDate = DateTime.Now;
+            var id = 1;
+
+            var employeeToSave = new SaveEmployeeModel
+            {
+                BirthDate = birthDate,
+                Cpf = "11111111111",
+                Email = "emailInvalid",
+                Gender = "Male",
+                StartDate = "08/2012",
+                Team = null
+            };
+
+            ValidateModelForTests(employeeToSave, employeeController);
+            var result = await employeeController.PutAsync(id, employeeToSave) as ObjectResult;
+
+            Assert.False(employeeController.ModelState.IsValid);
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
         }
 
         [Fact]
