@@ -32,7 +32,7 @@ namespace EmployeesAPI.Services
                 await _unitOfWork.CompleteAsync();
                 return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee));
             }
-            catch (Exception ex)
+            catch (Exception ex) // TODO - TESTAR ESSE CASO
             {
                 return new EmployeeResponse($"An error occurred when deleting the employee: {ex.Message}");
             }
@@ -48,7 +48,7 @@ namespace EmployeesAPI.Services
 
                 return new EmployeeResponse(_mapper.Map<EmployeeModel>(entityToInsert));
             }
-            catch (Exception ex)
+            catch (Exception ex) // TODO - TESTAR ESSE CASO
             {
                 return new EmployeeResponse($"An error occurred when saving the employee: {ex.Message}");
             }
@@ -67,7 +67,7 @@ namespace EmployeesAPI.Services
             try
             {
                 var existingEmployee = await _employeeRepository.FindByIdAsync(id);
-                if (existingEmployee == null)
+                if (existingEmployee == null) // TODO - TESTAR ESSE CASO
                     return new EmployeeResponse("Employee not found.");
 
                 existingEmployee.Cpf = model.Cpf;
@@ -82,7 +82,7 @@ namespace EmployeesAPI.Services
 
                 return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee));
             }
-            catch (Exception ex)
+            catch (Exception ex) // TODO - TESTAR ESSE CASO
             {
                 return new EmployeeResponse($"An error occurred when updating the employee: {ex.Message}");
             }

@@ -8,7 +8,7 @@ using Moq;
 
 namespace EmployeesAPITests.Services
 {
-    public class EmployeeServiceTest
+    public class EmployeeServiceTests
     {
         public Mock<IEmployeeRepository> employeeRepository = new Mock<IEmployeeRepository>();
         public IMapper? mapper;
@@ -16,7 +16,7 @@ namespace EmployeesAPITests.Services
 
         public EmployeeService employeeService;
 
-        public EmployeeServiceTest()
+        public EmployeeServiceTests()
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -29,14 +29,15 @@ namespace EmployeesAPITests.Services
         }
 
         [Fact]
-        public async void ListEmployeesWithSuccess()
+        public async void List_Should_ListEmployees_When_EmployeesExistOnDatabase()
         {
+            var birthDate = DateTime.Now;
             var employees = new List<Employee>
             {
                 new Employee 
                 { 
                     Id = 1, 
-                    BirthDate = DateTime.Now, 
+                    BirthDate = birthDate,
                     Cpf = "11111111111", 
                     Email = "email1@email.com", 
                     Gender = "Male", 
@@ -46,7 +47,7 @@ namespace EmployeesAPITests.Services
                 new Employee
                 {
                     Id = 2,
-                    BirthDate = DateTime.Now,
+                    BirthDate = birthDate,
                     Cpf = "22222222222",
                     Email = "email2@email.com",
                     Gender = "Male",
@@ -81,7 +82,7 @@ namespace EmployeesAPITests.Services
         }
 
         [Fact]
-        public async void AddEmployeeWithSuccess()
+        public async void Insert_Should_InsertAndReturnEmployee_When_ValidEmployeeModel()
         {
             var employeeModel = new SaveEmployeeModel
             {
@@ -111,13 +112,14 @@ namespace EmployeesAPITests.Services
         }
 
         [Fact]
-        public async void UpdateEmployeeWithSuccess()
+        public async void Update_Should_UpdateAndReturnEmployee_When_ValidEmployeeModelAndValidId()
         {
             var id = 1;
+            var birthDate = DateTime.Now;
             var existentEmployee = new Employee 
             {
                 Id = 1,
-                BirthDate = DateTime.Now,
+                BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
                 Gender = "Male",
@@ -127,7 +129,7 @@ namespace EmployeesAPITests.Services
 
             var employeeModel = new SaveEmployeeModel
             {
-                BirthDate = DateTime.Now,
+                BirthDate = birthDate,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
                 Gender = "Male",
@@ -154,8 +156,32 @@ namespace EmployeesAPITests.Services
             Assert.True(result.Success);
         }
 
+
         [Fact]
-        public async void DeleteEmployeeWithSuccess()
+        public async void Update_Should_NotReturnSuccess_When_NotExistentId()
+        {
+            var id = 1;
+            var employeeModel = new SaveEmployeeModel
+            {
+                BirthDate = DateTime.Now,
+                Cpf = "22222222222",
+                Email = "email2@email.com",
+                Gender = "Male",
+                StartDate = "02/2019",
+                Team = "DEVOPS"
+            };
+
+            employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(() => null);
+            var result = await employeeService.UpdateAsync(id, employeeModel);
+
+            employeeRepository.Verify(s => s.FindByIdAsync(id));
+            employeeRepository.VerifyNoOtherCalls();
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Delete_Should_DeleteAndReturnEmployee_When_ValidId()
         {
             var id = 1;
             var existentEmployee = new Employee
@@ -186,6 +212,20 @@ namespace EmployeesAPITests.Services
             Assert.Equal(result.Employee.Team, existentEmployee.Team);
 
             Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void Delete_Should_NotReturnSuccess_When_NotExistentId()
+        {
+            var id = 1;
+
+            employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(() => null);
+            var result = await employeeService.DeleteAsync(id);
+
+            employeeRepository.Verify(s => s.FindByIdAsync(id));
+            employeeRepository.VerifyNoOtherCalls();
+
+            Assert.False(result.Success);
         }
     }
 }
