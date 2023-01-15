@@ -105,15 +105,16 @@ namespace EmployeesAPITests.Controllers
                 Team = null
             };
 
-            var employeeResponse = new EmployeeResponse(employee);
+            var employeeResponse = new EmployeeResponse(employee, HttpStatusCode.OK);
 
             employeeService.Setup(s => s.SaveAsync(It.IsAny<SaveEmployeeModel>())).ReturnsAsync(employeeResponse);
 
             ValidateModelForTests(employeeToSave, employeeController);
-            var result = await employeeController.PostAsync(employeeToSave) as OkObjectResult;
+            var result = await employeeController.PostAsync(employeeToSave) as ObjectResult;
             var employeeReturned = result?.Value as EmployeeModel;
 
             Assert.True(employeeController.ModelState.IsValid);
+            Assert.Equal((int)HttpStatusCode.OK, result?.StatusCode);
             Assert.NotNull(employeeReturned);
             Assert.Equal(employeeToSave.BirthDate, employeeReturned.BirthDate);
             Assert.Equal(employeeToSave.Cpf, employeeReturned.Cpf);
@@ -151,12 +152,12 @@ namespace EmployeesAPITests.Controllers
                 Team = null
             };
 
-            var employeeResponse = new EmployeeResponse(updatedEmployee);
+            var employeeResponse = new EmployeeResponse(updatedEmployee, HttpStatusCode.OK);
 
             employeeService.Setup(s => s.UpdateAsync(id, It.IsAny<SaveEmployeeModel>())).ReturnsAsync(employeeResponse);
 
             ValidateModelForTests(newEmployeeDataModel, employeeController);
-            var result = await employeeController.PutAsync(id, newEmployeeDataModel) as OkObjectResult;
+            var result = await employeeController.PutAsync(id, newEmployeeDataModel) as ObjectResult;
             var employeeReturned = result?.Value as EmployeeModel;
 
             Assert.True(employeeController.ModelState.IsValid);
@@ -187,11 +188,11 @@ namespace EmployeesAPITests.Controllers
                 Team = null
             };
 
-            var employeeResponse = new EmployeeResponse(deletedEmployee);
+            var employeeResponse = new EmployeeResponse(deletedEmployee, HttpStatusCode.OK);
 
             employeeService.Setup(s => s.DeleteAsync(id)).ReturnsAsync(employeeResponse);
 
-            var result = await employeeController.DeleteAsync(id) as OkObjectResult;
+            var result = await employeeController.DeleteAsync(id) as ObjectResult;
             var employeeReturned = result?.Value as EmployeeModel;
 
             Assert.True(employeeController.ModelState.IsValid);

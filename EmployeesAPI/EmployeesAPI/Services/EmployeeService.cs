@@ -4,6 +4,7 @@ using EmployeesAPI.Domain.Entities;
 using EmployeesAPI.Domain.Repositories;
 using EmployeesAPI.Models;
 using EmployeesAPI.Services.Communication;
+using System.Net;
 
 namespace EmployeesAPI.Services
 {
@@ -26,15 +27,15 @@ namespace EmployeesAPI.Services
             {
                 var existingEmployee = await _employeeRepository.FindByIdAsync(id);
                 if (existingEmployee == null)
-                    return new EmployeeResponse("Employee not found.");
+                    return new EmployeeResponse("Employee not found.", HttpStatusCode.NotFound);
 
                 _employeeRepository.Remove(existingEmployee);
                 await _unitOfWork.CompleteAsync();
-                return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee));
+                return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee), HttpStatusCode.OK);
             }
-            catch (Exception ex) // TODO - TESTAR ESSE CASO
+            catch (Exception ex)
             {
-                return new EmployeeResponse($"An error occurred when deleting the employee: {ex.Message}");
+                return new EmployeeResponse($"An error occurred when deleting the employee: {ex.Message}", HttpStatusCode.BadRequest);
             }
         }
 
@@ -46,11 +47,11 @@ namespace EmployeesAPI.Services
                 await _employeeRepository.AddAsync(entityToInsert);
                 await _unitOfWork.CompleteAsync();
 
-                return new EmployeeResponse(_mapper.Map<EmployeeModel>(entityToInsert));
+                return new EmployeeResponse(_mapper.Map<EmployeeModel>(entityToInsert), HttpStatusCode.OK) ;
             }
-            catch (Exception ex) // TODO - TESTAR ESSE CASO
+            catch (Exception ex)
             {
-                return new EmployeeResponse($"An error occurred when saving the employee: {ex.Message}");
+                return new EmployeeResponse($"An error occurred when saving the employee: {ex.Message}", HttpStatusCode.BadRequest);
             }
         }
 
@@ -67,8 +68,8 @@ namespace EmployeesAPI.Services
             try
             {
                 var existingEmployee = await _employeeRepository.FindByIdAsync(id);
-                if (existingEmployee == null) // TODO - TESTAR ESSE CASO
-                    return new EmployeeResponse("Employee not found.");
+                if (existingEmployee == null)
+                    return new EmployeeResponse("Employee not found.", HttpStatusCode.NotFound);
 
                 existingEmployee.Cpf = model.Cpf;
                 existingEmployee.BirthDate = model.BirthDate;
@@ -80,11 +81,11 @@ namespace EmployeesAPI.Services
                 _employeeRepository.Update(existingEmployee);
                 await _unitOfWork.CompleteAsync();
 
-                return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee));
+                return new EmployeeResponse(_mapper.Map<EmployeeModel>(existingEmployee), HttpStatusCode.OK);
             }
-            catch (Exception ex) // TODO - TESTAR ESSE CASO
+            catch (Exception ex)
             {
-                return new EmployeeResponse($"An error occurred when updating the employee: {ex.Message}");
+                return new EmployeeResponse($"An error occurred when updating the employee: {ex.Message}", HttpStatusCode.BadRequest);
             }
         }
     }

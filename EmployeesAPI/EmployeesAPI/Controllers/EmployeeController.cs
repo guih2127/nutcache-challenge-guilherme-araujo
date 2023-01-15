@@ -31,9 +31,9 @@ namespace EmployeesAPI.Controllers
             var result = await _employeeService.SaveAsync(model);
 
             if (!result.Success)
-                return BadRequest(result.Message);
+                return StatusCode((int)result.StatusCode, result.Message);
 
-            return Ok(result.Employee);
+            return StatusCode((int)result.StatusCode, result.Employee);
         }
 
         [HttpPut("{id}")]
@@ -45,9 +45,9 @@ namespace EmployeesAPI.Controllers
             var result = await _employeeService.UpdateAsync(id, model);
 
             if (!result.Success)
-                return BadRequest(result.Message);
+                return StatusCode((int)result.StatusCode, result.Message);
 
-            return Ok(result.Employee);
+            return StatusCode((int)result.StatusCode, result.Employee);
         }
 
         [HttpDelete("{id}")]
@@ -56,9 +56,9 @@ namespace EmployeesAPI.Controllers
             var result = await _employeeService.DeleteAsync(id);
 
             if (!result.Success)
-                return BadRequest(result.Message);
+                return StatusCode((int)result.StatusCode, result.Message);
 
-            return Ok(result.Employee);
+            return StatusCode((int)result.StatusCode, result.Employee);
         }
     }
 }
