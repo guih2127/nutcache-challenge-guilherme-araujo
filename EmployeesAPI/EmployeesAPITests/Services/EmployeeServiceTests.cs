@@ -2,6 +2,7 @@ using AutoMapper;
 using EmployeesAPI.Domain.Entities;
 using EmployeesAPI.Domain.Repositories;
 using EmployeesAPI.Mapping;
+using EmployeesAPI.Models;
 using EmployeesAPI.Services;
 using Moq;
 
@@ -77,6 +78,114 @@ namespace EmployeesAPITests.Services
 
             employeeRepository.Verify(s => s.ListAsync());
             employeeRepository.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void AddEmployeeWithSuccess()
+        {
+            var employeeModel = new SaveEmployeeModel
+            {
+                BirthDate = DateTime.Now,
+                Cpf = "22222222222",
+                Email = "email2@email.com",
+                Gender = "Male",
+                StartDate = "02/2019",
+                Team = "DEVOPS"
+            };
+
+            var result = await employeeService.SaveAsync(employeeModel);
+
+            employeeRepository.Verify(s => s.AddAsync(It.IsAny<Employee>()));
+            employeeRepository.VerifyNoOtherCalls();
+            unitOfWork.Verify(s => s.CompleteAsync());
+            unitOfWork.VerifyNoOtherCalls();
+
+            Assert.Equal(result.Employee.BirthDate, employeeModel.BirthDate);
+            Assert.Equal(result.Employee.Cpf, employeeModel.Cpf);
+            Assert.Equal(result.Employee.Email, employeeModel.Email);
+            Assert.Equal(result.Employee.Gender, employeeModel.Gender);
+            Assert.Equal(result.Employee.StartDate, employeeModel.StartDate);
+            Assert.Equal(result.Employee.Team, employeeModel.Team);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void UpdateEmployeeWithSuccess()
+        {
+            var id = 1;
+            var existentEmployee = new Employee 
+            {
+                Id = 1,
+                BirthDate = DateTime.Now,
+                Cpf = "11111111111",
+                Email = "email1@email.com",
+                Gender = "Male",
+                StartDate = "02/2019",
+                Team = "DEVOPS"
+            };
+
+            var employeeModel = new SaveEmployeeModel
+            {
+                BirthDate = DateTime.Now,
+                Cpf = "22222222222",
+                Email = "email2@email.com",
+                Gender = "Male",
+                StartDate = "02/2019",
+                Team = "DEVOPS"
+            };
+
+            employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(existentEmployee);
+            var result = await employeeService.UpdateAsync(id, employeeModel);
+
+            employeeRepository.Verify(s => s.FindByIdAsync(id));
+            employeeRepository.Verify(s => s.Update(It.IsAny<Employee>()));
+            employeeRepository.VerifyNoOtherCalls();
+            unitOfWork.Verify(s => s.CompleteAsync());
+            unitOfWork.VerifyNoOtherCalls();
+
+            Assert.Equal(result.Employee.BirthDate, employeeModel.BirthDate);
+            Assert.Equal(result.Employee.Cpf, employeeModel.Cpf);
+            Assert.Equal(result.Employee.Email, employeeModel.Email);
+            Assert.Equal(result.Employee.Gender, employeeModel.Gender);
+            Assert.Equal(result.Employee.StartDate, employeeModel.StartDate);
+            Assert.Equal(result.Employee.Team, employeeModel.Team);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void DeleteEmployeeWithSuccess()
+        {
+            var id = 1;
+            var existentEmployee = new Employee
+            {
+                Id = 1,
+                BirthDate = DateTime.Now,
+                Cpf = "11111111111",
+                Email = "email1@email.com",
+                Gender = "Male",
+                StartDate = "02/2019",
+                Team = "DEVOPS"
+            };
+
+            employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(existentEmployee);
+            var result = await employeeService.DeleteAsync(id);
+
+            employeeRepository.Verify(s => s.FindByIdAsync(id));
+            employeeRepository.Verify(s => s.Remove(It.IsAny<Employee>()));
+            employeeRepository.VerifyNoOtherCalls();
+            unitOfWork.Verify(s => s.CompleteAsync());
+            unitOfWork.VerifyNoOtherCalls();
+
+            Assert.Equal(result.Employee.BirthDate, existentEmployee.BirthDate);
+            Assert.Equal(result.Employee.Cpf, existentEmployee.Cpf);
+            Assert.Equal(result.Employee.Email, existentEmployee.Email);
+            Assert.Equal(result.Employee.Gender, existentEmployee.Gender);
+            Assert.Equal(result.Employee.StartDate, existentEmployee.StartDate);
+            Assert.Equal(result.Employee.Team, existentEmployee.Team);
+
+            Assert.True(result.Success);
         }
     }
 }
