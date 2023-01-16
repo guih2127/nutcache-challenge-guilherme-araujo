@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import EmployeesTable from './components/employees.table';
-import employeesService from './services/employees.service';
+import { useEffect, useState } from "react";
+import EmployeesTable from "./components/employees.table";
+import employeesService from "./services/employees.service";
 
 function App() {
   const [employees, setEmployees] = useState();
@@ -10,16 +10,19 @@ function App() {
   }, []);
 
   const retrieveEmployees = async () => {
-    await employeesService.getEmployees().then(result => {
+    await employeesService.getEmployees().then((result) => {
       setEmployees(result.data);
     });
   };
 
   if (employees) {
     return (
-      <EmployeesTable employees={employees} />
+      <EmployeesTable
+        employees={employees}
+        retrieveEmployees={retrieveEmployees}
+      />
     );
   }
-};
+}
 
-export default App
+export default App;

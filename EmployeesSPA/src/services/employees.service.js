@@ -5,15 +5,15 @@ const getEmployees = async () => {
 };
 
 const insertEmployee = async (employee) => {
-    return await client.post(employee);
+    return await client.post('/' ,employee);
 };
 
 const updateEmployee = async (employee) => {
-    return await client.put(employee.id.toString(), employee);
+    return await client.put(`/${employee.id.toString()}`, employee);
 };
 
 const deleteEmployee = async(employee) => {
-    return await client.delete(employee.id.toString());
+    return await client.delete(`/${employee.id.toString()}`);
 }
 
 const employeesService = {
