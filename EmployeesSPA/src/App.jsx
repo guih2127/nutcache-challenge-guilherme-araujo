@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
-import client from './api/employees.api';
 import EmployeesTable from './components/employees.table';
+import employeesService from './services/employees.service';
 
 function App() {
   const [employees, setEmployees] = useState();
 
   useEffect(() => {
-    client.get().then(response => {
-      setEmployees(response.data);
-    }); // TODO - MOVER METODO PARA ARQUIVO DE SERVICE
-  }, [])
+    retrieveEmployees();
+  }, []);
+
+  const retrieveEmployees = async () => {
+    await employeesService.getEmployees().then(result => {
+      setEmployees(result.data);
+    });
+  };
 
   if (employees) {
     return (
