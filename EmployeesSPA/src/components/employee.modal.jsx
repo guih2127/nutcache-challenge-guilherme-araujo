@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import EmployeeModalInput from "./employee.modal.input";
 import employeesService from "../services/employees.service";
 import { useState } from "react";
+import EmployeeModalSelect from "./employee.modal.select";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -110,15 +111,25 @@ export default function EmployeeModal({
                 value={birthDate}
                 setValue={setBirthDate}
               />
-              <EmployeeModalInput
+              <EmployeeModalSelect
                 label="Team"
                 value={team}
                 setValue={setTeam}
+                options={[
+                  { label: "Mobile", value: "Mobile" },
+                  { label: "Backend", value: "Backend" },
+                  { label: "Frontend", value: "Frontend" },
+                  { label: "No Team", value: null },
+                ]}
               />
-              <EmployeeModalInput
+              <EmployeeModalSelect
                 label="Gender"
                 value={gender}
                 setValue={setGender}
+                options={[
+                  { label: "Male", value: "M" },
+                  { label: "Female", value: "F" },
+                ]}
               />
               <EmployeeModalInput label="CPF" value={cpf} setValue={setCpf} />
             </DialogContentText>

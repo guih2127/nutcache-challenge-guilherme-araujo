@@ -9,21 +9,26 @@ import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import EmployeeModal from "./employee.modal";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import EmployeeDeleteModal from "./employee.delete.modal";
 
 export default function EmployeesTable({ employees, retrieveEmployees }) {
   const [employee, setEmployee] = useState();
-  const [openModal, setOpenModal] = useState(false);
+  const [saveEmployeeModal, setOpenSaveEmployeeModal] = useState(false);
   const [modalType, setModalType] = useState();
+  const [deleteEmployeeModal, setDeleteEmployeeModal] = useState(false);
 
   const onEditEmployeeButtonClick = (employee) => {
     setEmployee(employee);
     setModalType("UPDATE");
-    setOpenModal(true);
+    setOpenSaveEmployeeModal(true);
+    setDeleteEmployeeModal(false);
   };
 
-  const onModalClose = () => {
+  const setModalClose = () => {
     setEmployee(null);
-    setOpenModal(false);
+    setOpenDeleteEmployeeModal(false);
+    setOpenSaveEmployeeModal(false);
   };
 
   const onAddEmployeeButtonClick = () => {
@@ -38,19 +43,39 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
 
     setModalType("INSERT");
     setEmployee(employee);
-    setOpenModal(true);
+    setOpenSaveEmployeeModal(true);
+    setDeleteEmployeeModal(false);
   };
 
-  const renderEmployeeModal = () => {
+  const onDeleteEmployeeButtonClick = (employee) => {
+    setEmployee(employee);
+    setDeleteEmployeeModal(true);
+    setOpenSaveEmployeeModal(false);
+  };
+
+  const renderSaveEmployeeModal = () => {
     if (employee) {
       return (
         <EmployeeModal
-          open={openModal}
-          onClose={onModalClose}
+          open={saveEmployeeModal}
+          onClose={setModalClose}
           modalType={modalType}
           employee={employee}
           setEmployee={setEmployee}
           retrieveEmployees={retrieveEmployees}
+        />
+      );
+    }
+  };
+
+  const renderDeleteEmployeeModal = () => {
+    if (employee) {
+      return (
+        <EmployeeDeleteModal
+          open={deleteEmployeeModal}
+          onClose={setModalClose}
+          retrieveEmployees={retrieveEmployees}
+          employee={employee}
         />
       );
     }
@@ -87,18 +112,26 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
                 <TableCell align="right">{row.team}</TableCell>
                 <TableCell align="right">{row.gender}</TableCell>
                 <TableCell align="right">{row.cpf}</TableCell>
-                <TableCell
-                  align="right"
-                  onClick={() => onEditEmployeeButtonClick(row)}
-                >
-                  Editar
+                <TableCell align="right">
+                  <ButtonGroup
+                    variant="contained"
+                    aria-label="outlined primary button group"
+                  >
+                    <Button onClick={() => onEditEmployeeButtonClick(row)}>
+                      Edit
+                    </Button>
+                    <Button onClick={() => onDeleteEmployeeButtonClick(row)}>
+                      Delete
+                    </Button>
+                  </ButtonGroup>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {renderEmployeeModal()}
+      {renderSaveEmployeeModal()}
+      {renderDeleteEmployeeModal()}
       <Button
         variant="contained"
         component="label"
