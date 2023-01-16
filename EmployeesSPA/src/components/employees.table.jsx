@@ -15,9 +15,9 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState();
 
-  const handleClickEditar = (employee) => {
+  const onEditEmployeeButtonClick = (employee) => {
     setEmployee(employee);
-    setModalType("EDIT");
+    setModalType("UPDATE");
     setOpenModal(true);
   };
 
@@ -87,7 +87,10 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
                 <TableCell align="right">{row.team}</TableCell>
                 <TableCell align="right">{row.gender}</TableCell>
                 <TableCell align="right">{row.cpf}</TableCell>
-                <TableCell align="right" onClick={() => handleClickEditar(row)}>
+                <TableCell
+                  align="right"
+                  onClick={() => onEditEmployeeButtonClick(row)}
+                >
                   Editar
                 </TableCell>
               </TableRow>

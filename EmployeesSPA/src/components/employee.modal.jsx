@@ -60,8 +60,16 @@ export default function EmployeeModal({
     if (modalType === "INSERT") {
       insertEmployee(newEmployee);
     } else if (modalType === "UPDATE") {
-      newEmployee.id = id;
-      updateEmployee(newEmployee);
+      const updatedEmployee = {
+        id: employee.id,
+        email: email,
+        birthDate: new Date(),
+        startDate: startDate,
+        gender: gender,
+        team: team,
+        cpf: cpf,
+      };
+      updateEmployee(updatedEmployee);
     }
   };
 
