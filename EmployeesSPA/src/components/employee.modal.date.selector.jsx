@@ -3,7 +3,13 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import TextField from "@mui/material/TextField";
 
-export default function EmployeeModalDateSelector({ label, value, setValue }) {
+export default function EmployeeModalDateSelector({
+  label,
+  value,
+  setValue,
+  views,
+  inputFormat,
+}) {
   const handleChange = (newValue) => {
     setValue(newValue);
   };
@@ -11,8 +17,9 @@ export default function EmployeeModalDateSelector({ label, value, setValue }) {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <DesktopDatePicker
+        views={views}
         label={label}
-        inputFormat="DD/MM/YYYY"
+        inputFormat={inputFormat}
         value={value}
         onChange={handleChange}
         renderInput={(params) => <TextField {...params} />}

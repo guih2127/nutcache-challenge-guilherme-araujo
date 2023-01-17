@@ -12,6 +12,7 @@ import employeesService from "../services/employees.service";
 import { useState } from "react";
 import EmployeeModalSelect from "./employee.modal.select";
 import EmployeeModalDateSelector from "./employee.modal.date.selector";
+import moment from "moment/moment";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,7 +27,9 @@ export default function EmployeeModal({
 }) {
   const [email, setEmail] = useState(employee.email);
   const [birthDate, setBirthDate] = useState(employee.birthDate);
-  const [startDate, setStartDate] = useState(employee.startDate);
+  const [startDate, setStartDate] = useState(
+    moment(employee.startDate, "MM/YYYY")
+  );
   const [gender, setGender] = useState(employee.gender);
   const [team, setTeam] = useState(employee.team);
   const [cpf, setCpf] = useState(employee.cpf);
@@ -53,7 +56,7 @@ export default function EmployeeModal({
     const newEmployee = {
       email: email,
       birthDate: birthDate,
-      startDate: startDate,
+      startDate: moment(startDate).format("MM/YYYY"),
       gender: gender,
       team: team,
       cpf: cpf,
@@ -66,7 +69,7 @@ export default function EmployeeModal({
         id: employee.id,
         email: email,
         birthDate: birthDate,
-        startDate: startDate,
+        startDate: moment(startDate).format("MM/YYYY"),
         gender: gender,
         team: team,
         cpf: cpf,
@@ -102,15 +105,19 @@ export default function EmployeeModal({
                 value={email}
                 setValue={setEmail}
               />
-              <EmployeeModalInput
+              <EmployeeModalDateSelector
                 label="Start Date"
                 value={startDate}
                 setValue={setStartDate}
+                views={["year", "month"]}
+                inputFormat="MM/YYYY"
               />
               <EmployeeModalDateSelector
                 label="Birth Date"
                 value={birthDate}
                 setValue={setBirthDate}
+                views={["day", "year", "month"]}
+                inputFormat="DD/MM/YYYY"
               />
               <EmployeeModalSelect
                 label="Team"
