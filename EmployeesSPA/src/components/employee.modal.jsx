@@ -13,6 +13,10 @@ import { useState } from "react";
 import EmployeeModalSelect from "./employee.modal.select";
 import EmployeeModalDateSelector from "./employee.modal.date.selector";
 import moment from "moment/moment";
+import options from "./options/select.options";
+import Alert from "@mui/material/Alert";
+import { Stack } from "@mui/material";
+import { useEffect } from "react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,22 +29,30 @@ export default function EmployeeModal({
   modalType,
   retrieveEmployees,
 }) {
+  const [requestErrors, setRequestErrors] = useState([]);
   const [email, setEmail] = useState(employee.email);
   const [birthDate, setBirthDate] = useState(employee.birthDate);
-  const [startDate, setStartDate] = useState(
-    moment(employee.startDate, "MM/YYYY")
-  );
   const [gender, setGender] = useState(employee.gender);
   const [team, setTeam] = useState(employee.team);
   const [cpf, setCpf] = useState(employee.cpf);
+  const [startDate, setStartDate] = useState(
+    moment(employee.startDate, "MM/YYYY")
+  );
+
+  useEffect(() => {}, [requestErrors]);
 
   const insertEmployee = async (newEmployee) => {
-    await employeesService.insertEmployee(newEmployee).then((result) => {
-      if (!result.data.errors) {
-        retrieveEmployees();
-        onClose();
-      }
-    });
+    await employeesService
+      .insertEmployee(newEmployee)
+      .then((result) => {
+        if (!result.data.errors) {
+          retrieveEmployees();
+          onClose();
+        }
+      })
+      .catch((error) => {
+        setRequestErrors(error.response.data);
+      });
   };
 
   const updateEmployee = async (newEmployee) => {
@@ -78,6 +90,16 @@ export default function EmployeeModal({
     }
   };
 
+  const renderAlerts = () => {
+    const alerts = requestErrors.map((error) => {
+      return <Alert severity="error">{error}</Alert>;
+    });
+
+    if (requestErrors.length) {
+      return alerts;
+    }
+  };
+
   return (
     <>
       <Dialog
@@ -95,6 +117,7 @@ export default function EmployeeModal({
           noValidate
           autoComplete="off"
         >
+          <Stack sx={{ width: "100%" }}>{renderAlerts()}</Stack>
           <DialogTitle>
             {modalType == "INSERT" ? "Insert employee" : "Edit Employee"}
           </DialogTitle>
@@ -123,21 +146,13 @@ export default function EmployeeModal({
                 label="Team"
                 value={team}
                 setValue={setTeam}
-                options={[
-                  { label: "Mobile", value: "Mobile" },
-                  { label: "Backend", value: "Backend" },
-                  { label: "Frontend", value: "Frontend" },
-                  { label: "No Team", value: null },
-                ]}
+                options={options.teamOptions}
               />
               <EmployeeModalSelect
                 label="Gender"
                 value={gender}
                 setValue={setGender}
-                options={[
-                  { label: "Male", value: "M" },
-                  { label: "Female", value: "F" },
-                ]}
+                options={options.genderOptions}
               />
               <EmployeeModalInput label="CPF" value={cpf} setValue={setCpf} />
             </DialogContentText>

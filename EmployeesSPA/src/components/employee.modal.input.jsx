@@ -8,6 +8,7 @@ const EmployeeModalInput = ({ label, setValue, value }) => {
       label={label}
       onChange={(e) => setValue(e.target.value)}
       value={value}
+      error={!value}
     />
   );
 };

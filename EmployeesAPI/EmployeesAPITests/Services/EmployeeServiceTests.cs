@@ -1,5 +1,6 @@
 using AutoMapper;
 using EmployeesAPI.Domain.Entities;
+using EmployeesAPI.Domain.Enums;
 using EmployeesAPI.Domain.Repositories;
 using EmployeesAPI.Mapping;
 using EmployeesAPI.Models;
@@ -40,7 +41,7 @@ namespace EmployeesAPITests.Services
                     BirthDate = birthDate,
                     Cpf = "11111111111", 
                     Email = "email1@email.com", 
-                    Gender = "Male", 
+                    Gender = GenderEnum.MALE, 
                     StartDate = "02/2019", 
                     Team = null 
                 },
@@ -50,9 +51,9 @@ namespace EmployeesAPITests.Services
                     BirthDate = birthDate,
                     Cpf = "22222222222",
                     Email = "email2@email.com",
-                    Gender = "Male",
+                    Gender = GenderEnum.MALE,
                     StartDate = "02/2019",
-                    Team = "DEVOPS"
+                    Team = TeamEnum.MOBILE
                 },
             };
 
@@ -89,9 +90,9 @@ namespace EmployeesAPITests.Services
                 BirthDate = DateTime.Now,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
-                Team = "DEVOPS"
+                Team = TeamEnum.MOBILE
             };
 
             var result = await employeeService.SaveAsync(employeeModel);
@@ -122,9 +123,9 @@ namespace EmployeesAPITests.Services
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
-                Team = "DEVOPS"
+                Team = TeamEnum.MOBILE
             };
 
             var employeeModel = new SaveEmployeeModel
@@ -132,9 +133,9 @@ namespace EmployeesAPITests.Services
                 BirthDate = birthDate,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
-                Team = "DEVOPS"
+                Team = TeamEnum.MOBILE
             };
 
             employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(existentEmployee);
@@ -166,9 +167,9 @@ namespace EmployeesAPITests.Services
                 BirthDate = DateTime.Now,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
-                Team = "DEVOPS"
+                Team = TeamEnum.MOBILE
             };
 
             employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(() => null);
@@ -190,9 +191,9 @@ namespace EmployeesAPITests.Services
                 BirthDate = DateTime.Now,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
-                Team = "DEVOPS"
+                Team = TeamEnum.MOBILE
             };
 
             employeeRepository.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(existentEmployee);

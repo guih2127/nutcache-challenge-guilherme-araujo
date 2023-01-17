@@ -2,6 +2,7 @@
 using EmployeesAPI.Controllers;
 using EmployeesAPI.Domain;
 using EmployeesAPI.Domain.Entities;
+using EmployeesAPI.Domain.Enums;
 using EmployeesAPI.Mapping;
 using EmployeesAPI.Models;
 using EmployeesAPI.Services.Communication;
@@ -40,7 +41,7 @@ namespace EmployeesAPITests.Controllers
                     BirthDate = DateTime.Now,
                     Cpf = "11111111111",
                     Email = "email1@email.com",
-                    Gender = "Male",
+                    Gender = GenderEnum.MALE,
                     StartDate = "02/2019",
                     Team = null
                 },
@@ -50,9 +51,9 @@ namespace EmployeesAPITests.Controllers
                     BirthDate = DateTime.Now,
                     Cpf = "22222222222",
                     Email = "email2@email.com",
-                    Gender = "Male",
+                    Gender = GenderEnum.MALE,
                     StartDate = "02/2019",
-                    Team = "DEVOPS"
+                    Team = TeamEnum.MOBILE
                 },
             };
 
@@ -89,7 +90,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
                 Team = null
             };
@@ -100,7 +101,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
                 Team = null
             };
@@ -136,7 +137,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "22/208962",
                 Team = null
             };
@@ -158,7 +159,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "emailInvalid",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "08/2012",
                 Team = null
             };
@@ -180,7 +181,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
                 Team = null
             };
@@ -191,7 +192,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
                 Team = null
             };
@@ -228,7 +229,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "email1@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "22/208962",
                 Team = null
             };
@@ -251,7 +252,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = birthDate,
                 Cpf = "11111111111",
                 Email = "emailInvalid",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "08/2012",
                 Team = null
             };
@@ -273,7 +274,7 @@ namespace EmployeesAPITests.Controllers
                 BirthDate = DateTime.Now,
                 Cpf = "22222222222",
                 Email = "email2@email.com",
-                Gender = "Male",
+                Gender = GenderEnum.MALE,
                 StartDate = "02/2019",
                 Team = null
             };

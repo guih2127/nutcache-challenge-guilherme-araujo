@@ -19,6 +19,7 @@ const EmployeeModalSelect = ({ label, options, setValue, value }) => {
         value={value}
         label={label}
         onChange={(e) => setValue(e.target.value)}
+        error={!value}
       >
         {renderValues()}
       </Select>

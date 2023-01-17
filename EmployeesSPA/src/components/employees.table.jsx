@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import EmployeeDeleteModal from "./employee.delete.modal";
 import moment from "moment/moment";
+import options from "./options/select.options";
 
 export default function EmployeesTable({ employees, retrieveEmployees }) {
   const [employee, setEmployee] = useState();
@@ -35,10 +36,10 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
   const onAddEmployeeButtonClick = () => {
     const employee = {
       email: "",
-      startDate: "",
-      birthDate: "",
-      Team: "",
-      Gender: "",
+      startDate: moment().toDate(),
+      birthDate: moment().toDate(),
+      team: options.teamOptions[0].value,
+      gender: options.genderOptions[0].value,
       CPF: "",
     };
 
@@ -112,8 +113,15 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
                 <TableCell align="right">
                   {moment(row.birthDate).format("DD/MM/YYYY")}
                 </TableCell>
-                <TableCell align="right">{row.team}</TableCell>
-                <TableCell align="right">{row.gender}</TableCell>
+                <TableCell align="right">
+                  {options.teamOptions.find((x) => x.value === row.team).label}
+                </TableCell>
+                <TableCell align="right">
+                  {
+                    options.genderOptions.find((x) => x.value === row.gender)
+                      .label
+                  }
+                </TableCell>
                 <TableCell align="right">{row.cpf}</TableCell>
                 <TableCell align="right">
                   <ButtonGroup
