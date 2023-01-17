@@ -11,6 +11,7 @@ import EmployeeModal from "./employee.modal";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import EmployeeDeleteModal from "./employee.delete.modal";
+import moment from "moment/moment";
 
 export default function EmployeesTable({ employees, retrieveEmployees }) {
   const [employee, setEmployee] = useState();
@@ -108,7 +109,9 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
                 </TableCell>
                 <TableCell align="right">{row.email}</TableCell>
                 <TableCell align="right">{row.startDate}</TableCell>
-                <TableCell align="right">{row.birthDate}</TableCell>
+                <TableCell align="right">
+                  {moment(row.birthDate).format("DD/MM/YYYY")}
+                </TableCell>
                 <TableCell align="right">{row.team}</TableCell>
                 <TableCell align="right">{row.gender}</TableCell>
                 <TableCell align="right">{row.cpf}</TableCell>
@@ -136,6 +139,7 @@ export default function EmployeesTable({ employees, retrieveEmployees }) {
         variant="contained"
         component="label"
         onClick={onAddEmployeeButtonClick}
+        style={{ marginTop: "10px" }}
       >
         Add Employee
       </Button>

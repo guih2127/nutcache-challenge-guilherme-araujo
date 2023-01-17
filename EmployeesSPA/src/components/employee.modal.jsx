@@ -11,6 +11,7 @@ import EmployeeModalInput from "./employee.modal.input";
 import employeesService from "../services/employees.service";
 import { useState } from "react";
 import EmployeeModalSelect from "./employee.modal.select";
+import EmployeeModalDateSelector from "./employee.modal.date.selector";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -51,7 +52,7 @@ export default function EmployeeModal({
   const saveButtonOnClick = () => {
     const newEmployee = {
       email: email,
-      birthDate: new Date(),
+      birthDate: birthDate,
       startDate: startDate,
       gender: gender,
       team: team,
@@ -64,7 +65,7 @@ export default function EmployeeModal({
       const updatedEmployee = {
         id: employee.id,
         email: email,
-        birthDate: new Date(),
+        birthDate: birthDate,
         startDate: startDate,
         gender: gender,
         team: team,
@@ -106,7 +107,7 @@ export default function EmployeeModal({
                 value={startDate}
                 setValue={setStartDate}
               />
-              <EmployeeModalInput
+              <EmployeeModalDateSelector
                 label="Birth Date"
                 value={birthDate}
                 setValue={setBirthDate}
