@@ -4,7 +4,7 @@
 
 This is a Web Application made for the Nutcache technical challenge. There are two projects here: One being the API made with .NET CORE, that provides the backend routes for the employees and its unit tests; and the other being the Single Page application made in ReactJS.
 
-# How to run the application
+### How to run the application
 
 You need yarn and .Net Core SDK installed on your machine to run the application. With this out of the way, you will need to run the API first. You can do this by entering the API folder (EmployeesAPI/EmployeesAPI) and starting the solution, using the Visual Studio. You can also do this using the .NET CLI, typing the following command:
 
