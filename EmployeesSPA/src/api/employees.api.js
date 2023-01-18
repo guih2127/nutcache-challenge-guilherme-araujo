@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const employeesApiUrl = import.meta.env.VITE_API_URL;
+
 const client = axios.create({
-   baseURL: "https://localhost:7164/api/employee" 
-}); // TODO - PASSAR PARA .env
+  baseURL: `${employeesApiUrl}/api/employee`,
+});
 
 export default client;
