@@ -26,3 +26,8 @@ We are almost there. Now, you need to execute the last two commands to run the f
 yarn install
 yarn dev
 ```
+
+You can also check a full verification of the API using Swagger, for that, you need to type in your browser, using you current back-end port:
+```
+https://localhost:7164/swagger/index.html
+```
